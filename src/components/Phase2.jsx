@@ -81,23 +81,22 @@ export default function Phase2({ nextPhase }) {
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-pink-50/10 to-white/50"></div>
       </div>
 
-      {/* Corner Video - NO BORDERS, Fully Transparent Container */}
+      {/* Corner Video - Completely Transparent, No Background */}
       <div className="absolute bottom-6 right-6 w-64 h-auto z-20 rounded-3xl overflow-hidden">
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="w-full h-full object-contain"
-          style={{ opacity: 0.85 }}
+          className="w-full h-full object-contain opacity-85"
         >
           <source src="/corner_video.mp4" type="video/mp4" />
         </video>
-        {/* Subtle fade overlay on edges */}
+        {/* Subtle fade overlay on edges only */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: 'radial-gradient(ellipse at center, transparent 50%, rgba(254,242,244,0.2) 100%)'
+            background: 'radial-gradient(ellipse at center, transparent 60%, rgba(254,242,244,0.15) 100%)'
           }}
         ></div>
       </div>
@@ -160,20 +159,20 @@ export default function Phase2({ nextPhase }) {
                 <span className="relative z-10">YES!</span>
               </motion.button>
 
-              {/* NO Button - Vibrant & Always Visible */}
+              {/* NO Button - Vibrant & Always Visible with Smooth Movement */}
               <motion.button
                 ref={noBtnRef}
                 animate={noPosition}
-                className="fixed w-44 py-4 bg-gradient-to-r from-rose-400 to-pink-400 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest cursor-default border-2 border-rose-500 shadow-xl shadow-pink-400/40 z-[150]"
+                className="fixed w-44 py-4 bg-gradient-to-r from-rose-400 to-pink-400 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest cursor-default border-2 border-rose-500 shadow-2xl shadow-pink-400/60 z-[150]"
                 style={{
                   left: noPosition.x || '50%',
                   top: noPosition.y || '50%',
                 }}
                 transition={{
                   type: 'spring',
-                  stiffness: 800,
-                  damping: 40,
-                  duration: 0.3
+                  stiffness: 400,
+                  damping: 25,
+                  duration: 0.6
                 }}
               >
                 NO
