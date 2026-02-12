@@ -65,7 +65,7 @@ export default function Phase2({ nextPhase }) {
   }
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-[#fef2f4] via-[#fff5f7] to-white flex items-center justify-center sm:justify-end overflow-hidden">
+    <div className="fixed inset-0 bg-gradient-to-br from-[#fef2f4] via-[#fff5f7] to-white flex items-end justify-center sm:justify-end pb-12 overflow-hidden">
       {/* Background Anime Image */}
       <div
         className="absolute inset-0 bg-no-repeat pointer-events-none z-0"
@@ -87,7 +87,7 @@ export default function Phase2({ nextPhase }) {
         initial={{ opacity: 0, x: 100, scale: 0.95 }}
         animate={{ opacity: 1, x: -40, scale: 1 }}
         transition={{ type: "spring", damping: 30, stiffness: 100 }}
-        className="z-10 relative sm:mr-40 max-w-2xl w-[92%] sm:w-[700px]"
+        className="z-10 relative sm:mr-40 max-w-2xl w-[92%] sm:w-[750px]"
       >
         <div className="absolute -inset-4 bg-gradient-to-r from-rose-200/15 via-pink-200/15 to-rose-200/15 rounded-[5rem] blur-3xl"></div>
 
@@ -112,7 +112,7 @@ export default function Phase2({ nextPhase }) {
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-8 justify-center items-center mb-2">
+            <div className="flex flex-row gap-6 justify-center items-center mb-2">
               <motion.button
                 whileHover={{
                   scale: 1.08,
@@ -120,7 +120,7 @@ export default function Phase2({ nextPhase }) {
                 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={nextPhase}
-                className="w-40 py-4 bg-gradient-to-r from-pink-500 to-rose-600 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest shadow-2xl shadow-pink-300/50 transition-all border border-white/30 relative overflow-hidden"
+                className="w-36 py-3 bg-gradient-to-r from-pink-500 to-rose-600 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest shadow-2xl shadow-pink-300/50 transition-all border border-white/30 relative overflow-hidden"
               >
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-pink-400 to-rose-500 opacity-0"
@@ -136,10 +136,10 @@ export default function Phase2({ nextPhase }) {
                   ref={noBtnRef}
                   key="no-button"
                   animate={noPosition}
-                  className="fixed w-40 py-4 bg-gradient-to-r from-rose-400 to-pink-400 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest cursor-default border-2 border-rose-500 shadow-2xl shadow-pink-400/60 z-[150]"
+                  className="fixed w-36 py-3 bg-gradient-to-r from-rose-400 to-pink-400 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest cursor-default border-2 border-rose-500 shadow-2xl shadow-pink-400/60 z-[150]"
                   style={{
-                    left: noPosition.x || 'calc(50% - 80px)',
-                    top: noPosition.y || 'calc(50% - 24px)',
+                    left: noPosition.x || 'calc(50% + 90px)',
+                    top: noPosition.y || 'calc(80vh - 100px)',
                   }}
                   initial={{ opacity: 1 }}
                   animate={{ opacity: 1 }}
