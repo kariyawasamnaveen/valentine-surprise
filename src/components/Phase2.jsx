@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { Heart, Sparkles } from 'lucide-react'
+import { Heart, ShieldCheck } from 'lucide-react'
 
 export default function Phase2({ nextPhase }) {
     const [noPosition, setNoPosition] = useState({ x: 0, y: 0 })
@@ -15,10 +15,10 @@ export default function Phase2({ nextPhase }) {
         const cardRect = card.getBoundingClientRect()
         const btnRect = btn.getBoundingClientRect()
 
-        // Space for movement inside the card
-        const padding = 40
-        const maxX = (cardRect.width / 2) - (btnRect.width / 2) - padding
-        const maxY = (cardRect.height / 2) - (btnRect.height / 2) - padding
+        // Padding inside the card
+        const p = 30
+        const maxX = (cardRect.width / 2) - (btnRect.width / 2) - p
+        const maxY = (cardRect.height / 2) - (btnRect.height / 2) - p
 
         const newX = (Math.random() - 0.5) * maxX * 2
         const newY = (Math.random() - 0.5) * maxY * 2
@@ -27,73 +27,59 @@ export default function Phase2({ nextPhase }) {
     }
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center sm:justify-end bg-[#0f172a] overflow-hidden sm:px-16">
-            {/* Background Anime Image - Zoomed out and integrated */}
+        <div className="fixed inset-0 bg-[#f8fafc] flex items-center justify-center sm:justify-end overflow-hidden">
+            {/* Background Image - Zoomed out and Left Aligned */}
             <div
-                className="absolute inset-0 bg-cover bg-center transition-all duration-1000 scale-100"
-                style={{ backgroundImage: 'url("/proposal.png")' }}
+                className="absolute inset-0 bg-no-repeat transition-all duration-700 pointer-events-none"
+                style={{
+                    backgroundImage: 'url("/proposal.png")',
+                    backgroundSize: 'contain',
+                    backgroundPosition: 'left center',
+                    width: '100vw',
+                    height: '100vh'
+                }}
             >
-                <div className="absolute inset-0 bg-gradient-to-b from-[#0f172a]/60 via-transparent to-[#0f172a]/60"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-[#0f172a]/40 via-transparent to-transparent hidden sm:block"></div>
-                <div className="absolute inset-0 backdrop-blur-[2px]"></div>
+                {/* Softening overlays */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-[#f8fafc] hidden sm:block"></div>
+                <div className="absolute inset-0 bg-white/40 sm:hidden"></div>
             </div>
 
-            {/* Main Glass Card */}
+            {/* The Decision Card - Moved to the Right */}
             <motion.div
                 ref={cardRef}
-                initial={{ opacity: 0, x: 50 }}
+                initial={{ opacity: 0, x: 100 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 1, ease: "circOut" }}
-                className="z-10 bg-white/10 backdrop-blur-3xl p-10 sm:p-16 rounded-[4rem] shadow-[0_50px_120px_-20px_rgba(0,0,0,0.5)] border border-white/20 max-w-xl w-[90%] sm:w-[35rem] text-center relative overflow-hidden"
+                transition={{ type: "spring", damping: 25, stiffness: 120 }}
+                className="z-10 bg-white/95 backdrop-blur-md p-10 sm:p-14 rounded-[3rem] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] border border-white sm:mr-16 max-w-md w-[90%] sm:w-[28rem] text-center relative"
             >
-                {/* Animated Color Glows */}
-                <div className="absolute top-[-20%] left-[-20%] w-64 h-64 bg-pink-500/30 rounded-full blur-[100px] animate-pulse"></div>
-                <div className="absolute bottom-[-20%] right-[-20%] w-64 h-64 bg-rose-600/30 rounded-full blur-[100px] animate-pulse delay-700"></div>
+                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-rose-400 via-pink-500 to-rose-400"></div>
 
-                <div className="flex justify-center mb-10">
-                    <motion.div
-                        animate={{
-                            rotate: [0, 10, -10, 0],
-                            scale: [1, 1.1, 1]
-                        }}
-                        transition={{ repeat: Infinity, duration: 4 }}
-                        className="p-5 bg-gradient-to-br from-pink-500/20 to-rose-600/20 rounded-[2rem] border border-white/20 shadow-inner"
-                    >
-                        <Heart size={48} fill="#f43f5e" className="text-rose-500 drop-shadow-[0_0_10px_rgba(244,63,94,0.8)]" />
-                    </motion.div>
+                <div className="flex justify-center mb-8">
+                    <div className="p-3 bg-rose-50 rounded-2xl">
+                        <ShieldCheck size={32} className="text-rose-500" />
+                    </div>
                 </div>
 
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-6 group transition-all hover:bg-white/10">
-                    <Sparkles size={14} className="text-pink-400" />
-                    <span className="text-[10px] font-black text-rose-300 uppercase tracking-[0.4em]">Resource Priority: Critical</span>
+                <h2 className="text-2xl font-black text-slate-800 mb-2">Auth_Success</h2>
+                <p className="text-slate-400 font-mono text-[10px] mb-10 uppercase tracking-[0.4em]">
+                    Session Integrity: Verified
+                </p>
+
+                <div className="mb-14">
+                    <h3 className="text-xl font-medium text-slate-600 mb-4 italic">One final request...</h3>
+                    <p className="text-3xl font-black text-rose-600 leading-tight">
+                        "Will you be my <br /> Valentine?"
+                    </p>
                 </div>
 
-                <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 tracking-tighter">
-                    System Override.
-                </h2>
-
-                <h3 className="text-2xl sm:text-3xl font-medium text-white/90 mb-16 leading-relaxed italic">
-                    "Will you be my <br />
-                    <span className="relative inline-block mt-2">
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-rose-500 to-rose-700 font-black not-italic text-4xl sm:text-5xl">
-                            Valentine?
-                        </span>
-                        <div className="absolute -bottom-2 left-0 w-full h-1.5 bg-pink-500/30 blur-sm rounded-full"></div>
-                    </span>
-                    "
-                </h3>
-
-                <div className="flex flex-col sm:flex-row gap-10 justify-center items-center relative h-48 sm:h-20 sm:px-8">
+                <div className="flex flex-col sm:flex-row gap-6 justify-center items-center relative h-40 sm:h-20">
                     <motion.button
-                        whileHover={{
-                            scale: 1.08,
-                            boxShadow: "0 0 40px rgba(244,63,94,0.4)"
-                        }}
+                        whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={nextPhase}
-                        className="w-full sm:w-44 bg-gradient-to-r from-rose-500 to-pink-600 text-white py-4 rounded-[1.5rem] font-black text-sm uppercase tracking-[0.2em] z-30 transition-all border border-white/20 shadow-xl"
+                        className="w-40 bg-rose-600 text-white py-4 rounded-2xl font-bold text-sm uppercase tracking-widest shadow-xl shadow-rose-200 z-30 transition-all"
                     >
-                        Yes!
+                        YES!
                     </motion.button>
 
                     <motion.button
@@ -101,20 +87,18 @@ export default function Phase2({ nextPhase }) {
                         animate={{ x: noPosition.x, y: noPosition.y }}
                         onMouseEnter={moveButton}
                         onClick={moveButton}
-                        className="w-full sm:w-44 bg-white/5 hover:bg-white/10 text-white/30 py-4 rounded-[1.5rem] font-bold text-sm uppercase tracking-[0.2em] cursor-default border border-white/10 z-20 backdrop-blur-md"
-                        transition={{ type: 'spring', stiffness: 450, damping: 25 }}
+                        className="w-40 bg-slate-50 text-slate-300 py-4 rounded-2xl font-bold text-sm uppercase tracking-widest cursor-default border border-slate-100 z-20"
+                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                     >
                         No
                     </motion.button>
                 </div>
 
-                {/* Footer decorations */}
-                <div className="mt-16 flex justify-center items-center gap-6">
-                    <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-white/20"></div>
-                    <div className="flex gap-2">
-                        {[1, 2, 3].map(i => <div key={i} className="w-1.5 h-1.5 bg-rose-500/40 rounded-full animate-pulse shadow-[0_0_5px_rgba(244,63,94,0.5)]"></div>)}
-                    </div>
-                    <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-white/20"></div>
+                {/* Small decorative hearts at the bottom */}
+                <div className="mt-12 flex justify-center gap-2 opacity-20">
+                    <Heart size={14} fill="#f43f5e" className="text-rose-500" />
+                    <Heart size={14} fill="#f43f5e" className="text-rose-500" />
+                    <Heart size={14} fill="#f43f5e" className="text-rose-500" />
                 </div>
             </motion.div>
         </div>
