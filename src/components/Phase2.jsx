@@ -81,8 +81,8 @@ export default function Phase2({ nextPhase }) {
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-pink-50/10 to-white/50"></div>
       </div>
 
-      {/* Corner Video - Completely Transparent, No Background */}
-      <div className="absolute bottom-6 right-6 w-64 h-auto z-20 rounded-3xl overflow-hidden">
+      {/* Corner Video - Fully Transparent Container */}
+      <div className="absolute bottom-6 right-6 w-64 h-auto z-20 rounded-3xl overflow-hidden bg-transparent">
         <video
           autoPlay
           loop
@@ -92,13 +92,6 @@ export default function Phase2({ nextPhase }) {
         >
           <source src="/corner_video.mp4" type="video/mp4" />
         </video>
-        {/* Subtle fade overlay on edges only */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: 'radial-gradient(ellipse at center, transparent 60%, rgba(254,242,244,0.15) 100%)'
-          }}
-        ></div>
       </div>
 
       {/* Premium Decision Card - Transparent Edges */}
