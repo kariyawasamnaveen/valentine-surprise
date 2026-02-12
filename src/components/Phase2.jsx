@@ -33,7 +33,7 @@ export default function Phase2({ nextPhase }) {
                 className="absolute inset-0 bg-no-repeat transition-all duration-700 pointer-events-none"
                 style={{
                     backgroundImage: 'url("/proposal.png")',
-                    backgroundSize: 'contain',
+                    backgroundSize: '85%',
                     backgroundPosition: 'left center',
                     width: '100vw',
                     height: '100vh'
