@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Heart } from 'lucide-react'
 
 export default function Phase2({ nextPhase }) {
   const [noPosition, setNoPosition] = useState({ x: 0, y: 0 })
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const [isButtonMoving, setIsButtonMoving] = useState(false)
   const noBtnRef = useRef(null)
   const cardRef = useRef(null)
 
@@ -20,7 +21,7 @@ export default function Phase2({ nextPhase }) {
   // Check proximity and move button if mouse gets too close
   useEffect(() => {
     const btn = noBtnRef.current
-    if (!btn) return
+    if (!btn || isButtonMoving) return
 
     const btnRect = btn.getBoundingClientRect()
     const btnCenterX = btnRect.left + btnRect.width / 2
@@ -31,11 +32,14 @@ export default function Phase2({ nextPhase }) {
       Math.pow(mousePos.y - btnCenterY, 2)
     )
 
-    // If mouse is within 150px, teleport button to a safe zone
-    if (distance < 150) {
+    // If mouse is within 180px, teleport button to a safe zone
+    if (distance < 180) {
+      setIsButtonMoving(true)
       moveButtonToSafeZone()
+      // Reset moving state after animation completes
+      setTimeout(() => setIsButtonMoving(false), 700)
     }
-  }, [mousePos])
+  }, [mousePos, isButtonMoving])
 
   const moveButtonToSafeZone = () => {
     const viewportWidth = window.innerWidth
@@ -44,15 +48,12 @@ export default function Phase2({ nextPhase }) {
     const buttonHeight = 56
     const padding = 40
 
-    // ALL 8 SAFE ZONES ENABLED (including bottom-right over video)
+    // ALL 8 SAFE ZONES ENABLED
     const safeZones = [
-      // Top corners
       { x: padding, y: padding },
       { x: viewportWidth - buttonWidth - padding, y: padding },
-      // Bottom corners (INCLUDING bottom-right over video)
       { x: padding, y: viewportHeight - buttonHeight - padding },
       { x: viewportWidth - buttonWidth - padding, y: viewportHeight - buttonHeight - padding },
-      // Mid edges
       { x: padding, y: viewportHeight / 2 - buttonHeight / 2 },
       { x: viewportWidth - buttonWidth - padding, y: viewportHeight / 2 - buttonHeight / 2 },
       { x: viewportWidth / 2 - buttonWidth / 2, y: padding },
@@ -65,7 +66,7 @@ export default function Phase2({ nextPhase }) {
 
   return (
     <div className="fixed inset-0 bg-gradient-to-br from-[#fef2f4] via-[#fff5f7] to-white flex items-center justify-center sm:justify-end overflow-hidden">
-      {/* Background Anime Image - Shifted Left to Reveal Girl */}
+      {/* Background Anime Image */}
       <div
         className="absolute inset-0 bg-no-repeat pointer-events-none z-0"
         style={{
@@ -77,24 +78,34 @@ export default function Phase2({ nextPhase }) {
           opacity: 0.85
         }}
       >
-        {/* Soft gradient overlay for seamless transition */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-pink-50/10 to-white/50"></div>
       </div>
 
-      {/* Corner Video - Fully Transparent Container */}
-      <div className="absolute bottom-6 right-6 w-64 h-auto z-20 rounded-3xl overflow-hidden bg-transparent">
+      {/* Corner Video - Matching Background Color */}
+      <div
+        className="absolute bottom-6 right-6 w-64 h-auto z-20 rounded-3xl overflow-hidden"
+        style={{ backgroundColor: 'transparent' }}
+      >
+        <div
+          className="absolute inset-0 rounded-3xl"
+          style={{
+            background: 'linear-gradient(to bottom right, #fef2f4, #fff5f7)',
+            opacity: 0.3
+          }}
+        ></div>
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="w-full h-full object-contain opacity-85"
+          className="w-full h-full object-contain relative z-10"
+          style={{ opacity: 0.9 }}
         >
           <source src="/corner_video.mp4" type="video/mp4" />
         </video>
       </div>
 
-      {/* Premium Decision Card - Transparent Edges */}
+      {/* Premium Decision Card */}
       <motion.div
         ref={cardRef}
         initial={{ opacity: 0, x: 100, scale: 0.95 }}
@@ -102,10 +113,8 @@ export default function Phase2({ nextPhase }) {
         transition={{ type: "spring", damping: 30, stiffness: 100 }}
         className="z-10 relative sm:mr-40 max-w-xl w-[92%] sm:w-[600px]"
       >
-        {/* Soft glow effect (reduced opacity) */}
         <div className="absolute -inset-4 bg-gradient-to-r from-rose-200/15 via-pink-200/15 to-rose-200/15 rounded-[5rem] blur-3xl"></div>
 
-        {/* Main Card - Transparent Fade on Edges */}
         <div
           className="relative p-16 sm:p-20 rounded-[5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.06)]"
           style={{
@@ -113,7 +122,6 @@ export default function Phase2({ nextPhase }) {
             backdropFilter: 'blur(8px)',
           }}
         >
-          {/* Edge fade mask */}
           <div
             className="absolute inset-0 rounded-[5rem] pointer-events-none"
             style={{
@@ -122,7 +130,6 @@ export default function Phase2({ nextPhase }) {
           ></div>
 
           <div className="relative z-10">
-            {/* Question */}
             <div className="mb-16 pt-4">
               <p className="text-5xl sm:text-6xl font-black text-slate-900 leading-tight">
                 "Will you be my <br />
@@ -132,9 +139,7 @@ export default function Phase2({ nextPhase }) {
               </p>
             </div>
 
-            {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-8 justify-center items-center mb-2">
-              {/* YES Button - Enhanced */}
               <motion.button
                 whileHover={{
                   scale: 1.08,
@@ -152,27 +157,33 @@ export default function Phase2({ nextPhase }) {
                 <span className="relative z-10">YES!</span>
               </motion.button>
 
-              {/* NO Button - Vibrant & Always Visible with Smooth Movement */}
-              <motion.button
-                ref={noBtnRef}
-                animate={noPosition}
-                className="fixed w-44 py-4 bg-gradient-to-r from-rose-400 to-pink-400 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest cursor-default border-2 border-rose-500 shadow-2xl shadow-pink-400/60 z-[150]"
-                style={{
-                  left: noPosition.x || '50%',
-                  top: noPosition.y || '50%',
-                }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 400,
-                  damping: 25,
-                  duration: 0.6
-                }}
-              >
-                NO
-              </motion.button>
+              {/* NO Button - Always Visible with AnimatePresence */}
+              <AnimatePresence>
+                <motion.button
+                  ref={noBtnRef}
+                  key="no-button"
+                  animate={noPosition}
+                  className="fixed w-44 py-4 bg-gradient-to-r from-rose-400 to-pink-400 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest cursor-default border-2 border-rose-500 shadow-2xl shadow-pink-400/60 z-[150]"
+                  style={{
+                    left: noPosition.x || '50%',
+                    top: noPosition.y || '50%',
+                  }}
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 1 }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 300,
+                    damping: 20,
+                    duration: 0.7,
+                    opacity: { duration: 0 }
+                  }}
+                >
+                  NO
+                </motion.button>
+              </AnimatePresence>
             </div>
 
-            {/* Decorative Hearts */}
             <div className="mt-16 flex justify-center gap-5">
               {[0, 1, 2].map((i) => (
                 <motion.div
