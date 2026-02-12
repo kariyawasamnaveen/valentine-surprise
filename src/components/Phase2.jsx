@@ -82,11 +82,8 @@ export default function Phase2({ nextPhase }) {
       </div>
 
       {/* Premium Decision Card */}
-      <motion.div
+      <div
         ref={cardRef}
-        initial={{ opacity: 0, x: 100, scale: 0.95 }}
-        animate={{ opacity: 1, x: -40, scale: 1 }}
-        transition={{ type: "spring", damping: 30, stiffness: 100 }}
         className="z-10 relative sm:mr-20 max-w-2xl w-[92%] sm:w-[750px]"
       >
         <div className="absolute -inset-4 bg-gradient-to-r from-rose-200/15 via-pink-200/15 to-rose-200/15 rounded-[5rem] blur-3xl"></div>
