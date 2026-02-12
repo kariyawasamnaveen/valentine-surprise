@@ -87,7 +87,7 @@ export default function Phase2({ nextPhase }) {
         initial={{ opacity: 0, x: 100, scale: 0.95 }}
         animate={{ opacity: 1, x: -40, scale: 1 }}
         transition={{ type: "spring", damping: 30, stiffness: 100 }}
-        className="z-10 relative sm:mr-40 max-w-2xl w-[92%] sm:w-[750px]"
+        className="z-10 relative sm:mr-20 max-w-2xl w-[92%] sm:w-[750px]"
       >
         <div className="absolute -inset-4 bg-gradient-to-r from-rose-200/15 via-pink-200/15 to-rose-200/15 rounded-[5rem] blur-3xl"></div>
 
@@ -138,7 +138,7 @@ export default function Phase2({ nextPhase }) {
                   animate={{ ...noPosition, opacity: 1 }}
                   className="fixed w-36 py-3 bg-gradient-to-r from-rose-400 to-pink-400 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest cursor-default border-2 border-rose-500 shadow-2xl shadow-pink-400/60 z-[150]"
                   style={{
-                    left: noPosition.x || 'calc(50% + 90px)',
+                    left: noPosition.x || 'calc(50% + 170px)',
                     top: noPosition.y || 'calc(20vh + 80px)', // Align with card at top
                   }}
                   initial={{ opacity: 1 }}
