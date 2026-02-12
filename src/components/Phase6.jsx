@@ -8,7 +8,7 @@ export default function Phase6({ data }) {
     const fullText = "Happy Anniversary Baba" // The text user requested
 
     // Calculate Days Together
-    const startDate = data.startDate ? new Date(data.startDate) : new Date('2022-02-14') // Fallback if empty
+    const startDate = data?.startDate ? new Date(data.startDate) : new Date('2022-02-14')
     const today = new Date()
     const diffTime = Math.abs(today - startDate)
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
@@ -19,8 +19,8 @@ export default function Phase6({ data }) {
         audio.volume = 0.5
         audio.play().catch(e => console.log("Audio autoplay blocked:", e))
 
-        // 2. Confetti Explosion
-        const duration = 5 * 1000;
+        // 2. Confetti Explosion (Extended to 15 seconds)
+        const duration = 15 * 1000;
         const animationEnd = Date.now() + duration;
         const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
@@ -45,7 +45,7 @@ export default function Phase6({ data }) {
             } else {
                 clearInterval(typeInterval)
             }
-        }, 150) // Speed of typing
+        }, 150)
 
         return () => {
             clearInterval(interval)
@@ -55,11 +55,13 @@ export default function Phase6({ data }) {
     }, [])
 
     return (
-        <div className="min-h-screen bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-pink-200 via-stone-100 to-pink-200 flex flex-col items-center justify-center p-6 text-center overflow-hidden relative font-sans">
+        // FIXED: Using standard robust classes. Removed "min-h-screen" relative to parent, forced full viewport height.
+        // Also added explicit white background fallback.
+        <div className="fixed inset-0 w-full h-full bg-gradient-to-br from-rose-100 via-white to-pink-200 flex flex-col items-center justify-center p-4 text-center overflow-hidden z-50">
 
             {/* V25.0: Ambient Floating Hearts */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                {Array.from({ length: 25 }).map((_, i) => (
+            <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+                {Array.from({ length: 20 }).map((_, i) => (
                     <motion.div
                         key={i}
                         className="absolute text-pink-400 opacity-30"
@@ -85,25 +87,27 @@ export default function Phase6({ data }) {
                 ))}
             </div>
 
-            <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1 }}
-                className="relative z-10 w-full max-w-2xl flex flex-col items-center"
-            >
+            {/* Content Container - REMOVED initial opacity: 0 to guarantee visibility even if animation fails */}
+            <div className="relative z-10 w-full max-w-2xl flex flex-col items-center">
+
                 {/* Title Section */}
-                <div className="mb-10">
-                    <h1 className="text-5xl md:text-7xl font-serif font-black text-rose-600 mb-4 drop-shadow-sm tracking-tight">
+                <div className="mb-8 md:mb-12">
+                    <motion.h1
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="text-4xl md:text-6xl font-serif font-black text-rose-600 mb-4 drop-shadow-sm tracking-tight"
+                    >
                         It was always you.
-                    </h1>
+                    </motion.h1>
+
                     {/* Typewriter Text */}
                     <div className="h-8 md:h-12 flex items-center justify-center">
-                        <span className="text-xl md:text-3xl font-mono text-gray-700 font-bold tracking-widest uppercase">
+                        <span className="text-lg md:text-3xl font-mono text-gray-800 font-bold tracking-widest uppercase bg-white/50 px-4 py-1 rounded-full backdrop-blur-sm">
                             {typedText}
                             <motion.span
                                 animate={{ opacity: [0, 1, 0] }}
                                 transition={{ repeat: Infinity, duration: 0.8 }}
-                                className="inline-block w-1 h-6 md:h-8 bg-rose-500 ml-1 align-middle"
+                                className="inline-block w-1 h-5 md:h-8 bg-rose-500 ml-1 align-middle"
                             />
                         </span>
                     </div>
@@ -111,64 +115,64 @@ export default function Phase6({ data }) {
 
                 {/* VISUAL CENTERPIECE: The Polaroid */}
                 <motion.div
-                    initial={{ rotate: -5, scale: 0.8, opacity: 0 }}
-                    animate={{ rotate: 3, scale: 1, opacity: 1 }}
-                    transition={{ delay: 1, type: "spring", bounce: 0.4 }}
-                    className="relative bg-white p-4 pb-16 md:p-6 md:pb-24 shadow-[0_20px_50px_rgba(0,0,0,0.2)] transform rotate-2 hover:rotate-0 transition-transform duration-500 max-w-sm"
+                    initial={{ rotate: -5, scale: 0.8 }}
+                    animate={{ rotate: 3, scale: 1 }}
+                    transition={{ delay: 0.5, type: "spring", bounce: 0.4 }}
+                    className="relative bg-white p-3 pb-12 md:p-5 md:pb-20 shadow-[0_20px_50px_rgba(0,0,0,0.2)] transform rotate-2 hover:rotate-0 transition-transform duration-500 max-w-[280px] md:max-w-sm"
                 >
                     {/* Tape Effect */}
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-32 h-8 bg-yellow-100/50 rotate-[-2deg] shadow-sm backdrop-blur-sm"></div>
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-6 bg-yellow-100/60 rotate-[-2deg] shadow-sm backdrop-blur-sm"></div>
 
                     {/* The Image */}
-                    <div className="aspect-square bg-gray-100 overflow-hidden mb-2 filter sepia-[0.2] contrast-110">
-                        {data.images[4] ? (
+                    <div className="aspect-square bg-gray-100 overflow-hidden mb-2 filter sepia-[0.1] contrast-105 border border-gray-100">
+                        {data?.images && data.images[4] ? (
                             <img
                                 src={data.images[4]}
                                 alt="Us"
                                 className="w-full h-full object-cover"
                             />
                         ) : (
-                            <div className="w-full h-full flex items-center justify-center text-gray-400">No Image</div>
+                            <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 bg-pink-50 p-4">
+                                <Heart className="text-pink-200 mb-2" size={32} />
+                                <span className="text-xs">No Image Available</span>
+                            </div>
                         )}
                     </div>
 
                     {/* Handwritten Note */}
-                    <div className="absolute bottom-4 left-0 w-full text-center">
-                        <p className="font-cursive text-3xl text-gray-700 opacity-90" style={{ fontFamily: 'Brush Script MT, cursive' }}>
+                    <div className="absolute bottom-2 left-0 w-full text-center">
+                        <p className="font-cursive text-2xl md:text-3xl text-gray-800 opacity-90" style={{ fontFamily: 'Brush Script MT, cursive' }}>
                             Us &lt;3
                         </p>
                     </div>
-
-                    {/* Gloss Reflection */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity pointer-events-none"></div>
                 </motion.div>
 
                 {/* Emotional Stats */}
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 2.5, duration: 1 }}
-                    className="mt-12 bg-white/40 backdrop-blur-xl border border-white/60 p-6 rounded-2xl shadow-lg flex flex-col items-center gap-2"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1.5, duration: 1 }}
+                    className="mt-8 md:mt-12 bg-white/60 backdrop-blur-xl border border-white/80 p-6 rounded-2xl shadow-xl flex flex-col items-center gap-1"
                 >
-                    <div className="flex items-center gap-2 text-rose-600 font-bold uppercase tracking-widest text-xs">
-                        <Calendar size={14} />
+                    <div className="flex items-center gap-2 text-rose-600 font-bold uppercase tracking-widest text-[10px] md:text-xs">
+                        <Calendar size={12} />
                         <span>Timeline Established</span>
                     </div>
-                    <p className="text-2xl md:text-3xl font-serif text-gray-800">
+                    <p className="text-xl md:text-3xl font-serif text-gray-900">
                         Together for <b className="text-rose-600">{diffDays}</b> Days
                     </p>
-                    <p className="text-gray-500 text-sm italic">
+                    <p className="text-gray-500 text-xs md:text-sm italic">
                         ...and counting.
                     </p>
                 </motion.div>
 
                 {/* Audio Indicator */}
-                <div className="absolute bottom-4 right-4 text-xs text-gray-400 flex items-center gap-1 opacity-50">
-                    <Music size={12} className="animate-spin-slow" />
+                <div className="absolute bottom-4 right-4 text-[10px] text-gray-400 flex items-center gap-1 opacity-60">
+                    <Music size={10} className="animate-spin-slow" />
                     <span>Sound On</span>
                 </div>
 
-            </motion.div>
+            </div>
         </div>
     )
 }
