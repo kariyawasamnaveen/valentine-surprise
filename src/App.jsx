@@ -20,7 +20,7 @@ function App() {
     <div className="min-h-screen bg-black text-white overflow-hidden">
       {phase === 1 && <Phase1 nextPhase={nextPhase} />}
       {phase === 2 && <Phase2 nextPhase={nextPhase} />}
-      {phase === 3 && <Phase3 nextPhase={nextPhase} setData={setData} nextPhase={nextPhase} />}
+      {phase === 3 && <Phase3 setData={setData} nextPhase={nextPhase} />}
       {phase === 4 && <Phase4 data={data} nextPhase={nextPhase} />}
       {phase === 5 && <Phase5 data={data} nextPhase={nextPhase} />}
       {phase === 6 && <Phase6 data={data} />}
