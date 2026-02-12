@@ -107,11 +107,8 @@ export default function Phase2({ nextPhase }) {
 
           <div className="relative z-10">
             <div className="mb-16 pt-4">
-              <p className="text-5xl sm:text-6xl font-black text-slate-900 leading-tight">
-                "Will you be my <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 drop-shadow-sm">
-                  Valentine?"
-                </span>
+              <p className="text-3xl sm:text-4xl font-black text-slate-900 leading-tight">
+                "Will you be my <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 drop-shadow-sm">Valentine?"</span>
               </p>
             </div>
 
