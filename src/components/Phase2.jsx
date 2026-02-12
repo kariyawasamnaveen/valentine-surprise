@@ -1,79 +1,103 @@
-import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useRef } from 'react'
+import { motion } from 'framer-motion'
 import { Heart } from 'lucide-react'
 
 export default function Phase2({ nextPhase }) {
     const [noPosition, setNoPosition] = useState({ x: 0, y: 0 })
     const noBtnRef = useRef(null)
-    const containerRef = useRef(null)
+    const boxRef = useRef(null)
 
     const moveButton = () => {
-        if (!containerRef.current) return
-        const container = containerRef.current.getBoundingClientRect()
+        const box = boxRef.current
+        const btn = noBtnRef.current
+        if (!box || !btn) return
 
-        // Generate random position within container bounds, keeping padding
-        const padding = 100
-        const x = Math.random() * (container.width - padding * 2) - (container.width / 2 - padding)
-        const y = Math.random() * (container.height - padding * 2) - (container.height / 2 - padding)
+        const boxRect = box.getBoundingClientRect()
+        const btnRect = btn.getBoundingClientRect()
 
-        setNoPosition({ x, y })
+        // Padding to keep the button away from the edges
+        const padding = 20
 
-        // Play a subtle sound if we had audio assets, or trigger a haptic/visual feedback
+        // The problem with relative positioning (transform) is that x=0 and y=0 
+        // is where the button is naturally rendered by the layout.
+        // We want the button to stay within the boxRect.
+
+        // Let's calculate the range relative to the current center
+        const maxX = (boxRect.width - btnRect.width) / 2 - padding
+        const maxY = (boxRect.height - btnRect.height) / 2 - padding
+
+        // New position within the bounds
+        const newX = (Math.random() - 0.5) * maxX * 2
+        const newY = (Math.random() - 0.5) * maxY * 2
+
+        setNoPosition({ x: newX, y: newY })
     }
 
     return (
-        <div
-            ref={containerRef}
-            className="flex flex-col items-center justify-center min-h-screen p-6 relative bg-gray-50 text-gray-900"
-        >
-            <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="z-10 bg-white p-12 rounded-3xl shadow-xl border border-pink-100 max-w-xl w-full text-center relative overflow-hidden"
+        <div className="fixed inset-0 bg-[#fff5f7] flex items-center justify-center sm:justify-end overflow-hidden">
+            {/* Background Image - Aligned to the left for desktop, full for mobile */}
+            <div
+                className="absolute inset-0 sm:right-1/2 bg-cover bg-center transition-all duration-1000"
+                style={{ backgroundImage: 'url("/proposal.png")' }}
             >
-                {/* Subtle Decorative Hearts */}
-                <div className="absolute top-0 right-0 p-4 opacity-10 rotate-12">
-                    <Heart size={80} fill="#ec4899" className="text-pink-500" />
-                </div>
-                <div className="absolute bottom-0 left-0 p-4 opacity-10 -rotate-12">
-                    <Heart size={60} fill="#ec4899" className="text-pink-500" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#fff5f7] hidden sm:block"></div>
+                <div className="absolute inset-0 bg-black/20 sm:hidden"></div>
+            </div>
+
+            <motion.div
+                ref={boxRef}
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="z-10 bg-white/95 backdrop-blur-xl p-8 sm:p-20 rounded-none sm:rounded-l-[4rem] shadow-2xl border-l border-white/50 w-full sm:w-1/2 min-h-screen sm:min-h-0 flex flex-col justify-center text-center relative"
+            >
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-pink-400 via-rose-500 to-pink-400"></div>
+
+                <div className="flex justify-center mb-8">
+                    <motion.div
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ repeat: Infinity, duration: 2 }}
+                        className="p-4 bg-rose-50 rounded-full"
+                    >
+                        <Heart size={64} fill="#f43f5e" className="text-rose-500" />
+                    </motion.div>
                 </div>
 
-                <div className="bg-green-50 text-green-600 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest inline-block mb-6 border border-green-100">
-                    Authorization Successful
-                </div>
-
-                <h2 className="text-3xl font-bold mb-4 text-gray-800">
-                    Wait! One more thing...
+                <h2 className="text-3xl sm:text-6xl font-black text-gray-800 mb-4 leading-tight">
+                    System Override.
                 </h2>
-
-                <p className="text-lg text-gray-600 mb-12">
-                    All system protocols are green, but a pending personal request remains:
-                    <span className="block mt-4 text-2xl font-black text-pink-600 underline decoration-pink-200">
-                        Will you be my Valentine?
-                    </span>
+                <p className="text-gray-500 font-mono text-sm mb-12 uppercase tracking-[0.4em]">
+                    Final_Choice: Required
                 </p>
 
-                <div className="flex flex-col sm:flex-row gap-6 justify-center items-center h-20">
+                <h3 className="text-2xl sm:text-4xl font-bold text-pink-600 mb-16 italic leading-relaxed px-4">
+                    "Will you be my Valentine?"
+                </h3>
+
+                <div className="flex flex-col sm:flex-row gap-10 justify-center items-center relative h-40 sm:h-24 px-4 overflow-visible">
                     <motion.button
-                        whileHover={{ scale: 1.1 }}
+                        whileHover={{ scale: 1.15 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={nextPhase}
-                        className="w-40 bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-full font-bold shadow-lg shadow-pink-600/30 transition-shadow"
+                        className="w-56 bg-rose-500 text-white py-5 rounded-full font-black text-xl shadow-2xl shadow-rose-200 z-30 transition-all hover:bg-rose-600 active:bg-rose-700"
                     >
-                        YES! ❤️
+                        YES!
                     </motion.button>
 
                     <motion.button
                         ref={noBtnRef}
                         animate={{ x: noPosition.x, y: noPosition.y }}
                         onMouseEnter={moveButton}
-                        onClick={moveButton} // Just in case they somehow tap it on mobile
-                        className="w-40 bg-gray-200 text-gray-400 py-3 rounded-full font-bold cursor-default pointer-events-auto sm:absolute sm:z-20"
-                        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                        onClick={moveButton}
+                        className="w-56 bg-gray-50 text-gray-300 py-5 rounded-full font-bold text-xl cursor-default border border-gray-100 z-20"
+                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                     >
                         No
                     </motion.button>
+                </div>
+
+                {/* Decorative elements */}
+                <div className="mt-20 flex justify-center gap-4 opacity-20">
+                    {[1, 2, 3, 4, 5].map(i => <Heart key={i} size={28} className="text-rose-400" />)}
                 </div>
             </motion.div>
         </div>
