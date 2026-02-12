@@ -7,11 +7,18 @@ import Phase5 from './components/Phase5'
 import Phase6 from './components/Phase6'
 
 function App() {
-  const [phase, setPhase] = useState(1)
+  // DEV MODE: Start at Phase 5 for testing
+  const [phase, setPhase] = useState(5)
   const [data, setData] = useState({
-    startDate: '',
-    images: [],
-    username: 'Hansi' // Placeholder for her name
+    startDate: '2022-02-14', // Mock Date
+    images: [
+      'https://images.unsplash.com/photo-1518199266791-5375a83190b7',
+      'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2',
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
+      'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e',
+      'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d'
+    ],
+    username: 'Hansi'
   })
 
   const nextPhase = () => setPhase(prev => prev + 1)
