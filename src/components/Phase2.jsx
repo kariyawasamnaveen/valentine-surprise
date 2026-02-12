@@ -170,7 +170,7 @@ export default function Phase2({ nextPhase }) {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   )
 }
