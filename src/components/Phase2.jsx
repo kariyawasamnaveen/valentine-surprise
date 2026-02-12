@@ -66,7 +66,7 @@ export default function Phase2({ nextPhase }) {
         style={{
           backgroundImage: 'url("/proposal.png")',
           backgroundSize: '85%',
-          backgroundPosition: 'calc(0% - 120px) center', // Shifted 120px more to the left
+          backgroundPosition: 'calc(0% - 120px) center',
           width: '100vw',
           height: '100vh',
           opacity: 0.85
@@ -76,20 +76,28 @@ export default function Phase2({ nextPhase }) {
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-pink-50/10 to-white/50"></div>
       </div>
 
-      {/* Corner Video - NO BORDERS, Subtle Shadow */}
-      <div className="absolute bottom-6 right-6 w-64 h-auto z-20 rounded-3xl overflow-hidden shadow-xl bg-black opacity-90">
+      {/* Corner Video - Faded Edges, No Borders */}
+      <div className="absolute bottom-6 right-6 w-64 h-auto z-20 rounded-3xl overflow-hidden bg-black shadow-lg">
         <video
           autoPlay
           loop
           muted
           playsInline
           className="w-full h-full object-contain"
+          style={{ opacity: 0.85 }}
         >
           <source src="/corner_video.mp4" type="video/mp4" />
         </video>
+        {/* Fade overlay on all edges */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(ellipse at center, transparent 40%, rgba(254,242,244,0.3) 100%)'
+          }}
+        ></div>
       </div>
 
-      {/* Premium Decision Card - Seamless Integration */}
+      {/* Premium Decision Card - Transparent Edges */}
       <motion.div
         ref={cardRef}
         initial={{ opacity: 0, x: 100, scale: 0.95 }}
@@ -98,16 +106,24 @@ export default function Phase2({ nextPhase }) {
         className="z-10 relative sm:mr-40 max-w-xl w-[92%] sm:w-[600px]"
       >
         {/* Soft glow effect (reduced opacity) */}
-        <div className="absolute -inset-4 bg-gradient-to-r from-rose-200/20 via-pink-200/20 to-rose-200/20 rounded-[5rem] blur-3xl"></div>
+        <div className="absolute -inset-4 bg-gradient-to-r from-rose-200/15 via-pink-200/15 to-rose-200/15 rounded-[5rem] blur-3xl"></div>
 
-        {/* Main Card - NO BORDERS, Gradient Background with Fade */}
+        {/* Main Card - Transparent Fade on Edges */}
         <div
-          className="relative p-16 sm:p-20 rounded-[5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)]"
+          className="relative p-16 sm:p-20 rounded-[5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.06)]"
           style={{
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.7) 100%)',
-            backdropFilter: 'blur(10px)',
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.5) 100%)',
+            backdropFilter: 'blur(8px)',
           }}
         >
+          {/* Edge fade mask */}
+          <div
+            className="absolute inset-0 rounded-[5rem] pointer-events-none"
+            style={{
+              background: 'radial-gradient(ellipse at center, transparent 30%, rgba(254,242,244,0.4) 100%)',
+            }}
+          ></div>
+
           <div className="relative z-10">
             {/* Question */}
             <div className="mb-16 pt-4">
