@@ -1,32 +1,29 @@
-import { useState, useRef } from 'react'
-import { motion } from 'framer-motion'
+import { useState, useRef, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Heart } from 'lucide-react'
 
 export default function Phase2({ nextPhase }) {
     const [noPosition, setNoPosition] = useState({ x: 0, y: 0 })
     const noBtnRef = useRef(null)
-    const boxRef = useRef(null)
+    const cardRef = useRef(null)
 
     const moveButton = () => {
-        const box = boxRef.current
+        const card = cardRef.current
         const btn = noBtnRef.current
-        if (!box || !btn) return
+        if (!card || !btn) return
 
-        const boxRect = box.getBoundingClientRect()
+        const cardRect = card.getBoundingClientRect()
         const btnRect = btn.getBoundingClientRect()
 
-        // Padding to keep the button away from the edges
-        const padding = 20
+        // We want the button to stay within the white card
+        // The button starts at its center (relative to its parent)
+        // We calculate the available space inside the card relative to the button's starting position
 
-        // The problem with relative positioning (transform) is that x=0 and y=0 
-        // is where the button is naturally rendered by the layout.
-        // We want the button to stay within the boxRect.
+        const padding = 40
+        const maxX = (cardRect.width / 2) - (btnRect.width / 2) - padding
+        const maxY = (cardRect.height / 2) - (btnRect.height / 2) - padding
 
-        // Let's calculate the range relative to the current center
-        const maxX = (boxRect.width - btnRect.width) / 2 - padding
-        const maxY = (boxRect.height - btnRect.height) / 2 - padding
-
-        // New position within the bounds
+        // Generate random coordinates within the allowed range
         const newX = (Math.random() - 0.5) * maxX * 2
         const newY = (Math.random() - 0.5) * maxY * 2
 
@@ -34,51 +31,51 @@ export default function Phase2({ nextPhase }) {
     }
 
     return (
-        <div className="fixed inset-0 bg-[#fff5f7] flex items-center justify-center sm:justify-end overflow-hidden">
-            {/* Background Image - Aligned to the left for desktop, full for mobile */}
+        <div className="fixed inset-0 flex items-center justify-center p-4 bg-[#fffafa]">
+            {/* Background Anime Image - Softened and integrated */}
             <div
-                className="absolute inset-0 sm:right-1/2 bg-cover bg-center transition-all duration-1000"
+                className="absolute inset-0 bg-cover bg-center transition-all duration-1000 opacity-40 sm:opacity-50"
                 style={{ backgroundImage: 'url("/proposal.png")' }}
             >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#fff5f7] hidden sm:block"></div>
-                <div className="absolute inset-0 bg-black/20 sm:hidden"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-transparent to-white/80"></div>
             </div>
 
             <motion.div
-                ref={boxRef}
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="z-10 bg-white/95 backdrop-blur-xl p-8 sm:p-20 rounded-none sm:rounded-l-[4rem] shadow-2xl border-l border-white/50 w-full sm:w-1/2 min-h-screen sm:min-h-0 flex flex-col justify-center text-center relative"
+                ref={cardRef}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="z-10 bg-white/90 backdrop-blur-2xl p-8 sm:p-12 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/60 max-w-lg w-full text-center relative overflow-hidden"
             >
-                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-pink-400 via-rose-500 to-pink-400"></div>
+                {/* Premium Top Bar */}
+                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-pink-300 via-rose-500 to-pink-300"></div>
 
-                <div className="flex justify-center mb-8">
+                <div className="flex justify-center mb-6">
                     <motion.div
-                        animate={{ scale: [1, 1.2, 1] }}
+                        animate={{ scale: [1, 1.1, 1] }}
                         transition={{ repeat: Infinity, duration: 2 }}
-                        className="p-4 bg-rose-50 rounded-full"
+                        className="p-3 bg-rose-50 rounded-2xl"
                     >
-                        <Heart size={64} fill="#f43f5e" className="text-rose-500" />
+                        <Heart size={32} fill="#f43f5e" className="text-rose-500" />
                     </motion.div>
                 </div>
 
-                <h2 className="text-3xl sm:text-6xl font-black text-gray-800 mb-4 leading-tight">
+                <h2 className="text-2xl sm:text-3xl font-black text-gray-800 mb-2">
                     System Override.
                 </h2>
-                <p className="text-gray-500 font-mono text-sm mb-12 uppercase tracking-[0.4em]">
-                    Final_Choice: Required
+                <p className="text-gray-400 font-mono text-[10px] mb-8 uppercase tracking-[0.4em]">
+                    Priority_Status: High
                 </p>
 
-                <h3 className="text-2xl sm:text-4xl font-bold text-pink-600 mb-16 italic leading-relaxed px-4">
+                <h3 className="text-xl sm:text-2xl font-semibold text-gray-700 mb-12 italic">
                     "Will you be my Valentine?"
                 </h3>
 
-                <div className="flex flex-col sm:flex-row gap-10 justify-center items-center relative h-40 sm:h-24 px-4 overflow-visible">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center relative h-32 sm:h-16">
                     <motion.button
-                        whileHover={{ scale: 1.15 }}
-                        whileTap={{ scale: 0.9 }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                         onClick={nextPhase}
-                        className="w-56 bg-rose-500 text-white py-5 rounded-full font-black text-xl shadow-2xl shadow-rose-200 z-30 transition-all hover:bg-rose-600 active:bg-rose-700"
+                        className="w-36 bg-rose-500 text-white py-3 rounded-2xl font-bold text-sm shadow-lg shadow-rose-200 z-30 transition-all hover:bg-rose-600 active:bg-rose-700"
                     >
                         YES!
                     </motion.button>
@@ -88,16 +85,16 @@ export default function Phase2({ nextPhase }) {
                         animate={{ x: noPosition.x, y: noPosition.y }}
                         onMouseEnter={moveButton}
                         onClick={moveButton}
-                        className="w-56 bg-gray-50 text-gray-300 py-5 rounded-full font-bold text-xl cursor-default border border-gray-100 z-20"
-                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                        className="w-36 bg-gray-50 text-gray-300 py-3 rounded-2xl font-semibold text-sm cursor-default border border-gray-100 z-20"
+                        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                     >
                         No
                     </motion.button>
                 </div>
 
                 {/* Decorative elements */}
-                <div className="mt-20 flex justify-center gap-4 opacity-20">
-                    {[1, 2, 3, 4, 5].map(i => <Heart key={i} size={28} className="text-rose-400" />)}
+                <div className="mt-10 flex justify-center gap-1.5 opacity-10">
+                    {[1, 2, 3, 4, 5].map(i => <Heart key={i} size={16} className="text-rose-500 fill-current" />)}
                 </div>
             </motion.div>
         </div>
