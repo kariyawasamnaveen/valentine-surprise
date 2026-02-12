@@ -35,13 +35,23 @@ export default function Phase2({ nextPhase }) {
     // 100% Accurate Debug Logging
     console.log(`[DEBUG] Distance: ${distance}px | Mouse: (${Math.floor(mousePos.x)}, ${Math.floor(mousePos.y)}) | Button: (${Math.floor(btnCenterX)}, ${Math.floor(btnCenterY)}) | Status: ${distance < 110 ? '🔴 TRIGGERING ESCAPE' : '🟢 SAFE'}`);
 
-    // V17.0: Realistic Proximity (110px)
-    if (distance < 110) {
+    // V18.1: Optimized Realistic Proximity (85px)
+    if (distance < 85) {
       setIsButtonMoving(true)
       moveButtonToSafeZone()
       setTimeout(() => setIsButtonMoving(false), 500)
     }
   }, [mousePos, isButtonMoving])
+
+  // Reset button if mouse leaves window
+  useEffect(() => {
+    const handleMouseLeave = () => {
+      console.log("[DEBUG] Mouse left window - Resetting NO button position");
+      setNoPosition({ x: 0, y: 0 }); // 0 triggers the fallback calculation in style
+    };
+    window.addEventListener('mouseleave', handleMouseLeave);
+    return () => window.removeEventListener('mouseleave', handleMouseLeave);
+  }, []);
 
   const moveButtonToSafeZone = () => {
     const viewportWidth = window.innerWidth
@@ -137,30 +147,6 @@ export default function Phase2({ nextPhase }) {
                 <span className="relative z-10">YES!</span>
               </motion.button>
 
-              {/* NO Button - Always Visible with AnimatePresence */}
-              <AnimatePresence>
-                <motion.button
-                  ref={noBtnRef}
-                  key="no-button"
-                  animate={{ ...noPosition, opacity: 1 }}
-                  className="fixed w-36 py-3 bg-gradient-to-r from-rose-400 to-pink-400 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest cursor-default border-2 border-rose-500 shadow-2xl shadow-pink-400/60 z-[150]"
-                  style={{
-                    left: noPosition.x || 'calc(50% + 170px)',
-                    top: noPosition.y || 'calc(20vh + 80px)', // Align with card at top
-                  }}
-                  initial={{ opacity: 1 }}
-                  exit={{ opacity: 1 }}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 300,
-                    damping: 20,
-                    duration: 0.7,
-                    opacity: { duration: 0 }
-                  }}
-                >
-                  NO
-                </motion.button>
-              </AnimatePresence>
             </div>
 
             <div className="mt-16 flex justify-center gap-5">
@@ -181,6 +167,35 @@ export default function Phase2({ nextPhase }) {
           </div>
         </div>
       </div>
+
+      {/* NO Button - MOVED TO ROOT LEVEL TO PREVENT CLIPPING/DISAPPEARING */}
+      <AnimatePresence>
+        <motion.button
+          ref={noBtnRef}
+          key="no-button"
+          animate={{
+            x: noPosition.x || 0,
+            y: noPosition.y || 0,
+            opacity: 1
+          }}
+          className="fixed w-36 py-3 bg-gradient-to-r from-rose-400 to-pink-400 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest cursor-default border-2 border-rose-500 shadow-2xl shadow-pink-400/60 z-[150]"
+          style={{
+            left: noPosition.x ? 0 : 'calc(50% + 170px)',
+            top: noPosition.y ? 0 : 'calc(20vh + 80px)',
+            position: 'fixed'
+          }}
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 1 }}
+          transition={{
+            type: 'spring',
+            stiffness: 400,
+            damping: 25,
+            duration: 0.6
+          }}
+        >
+          NO
+        </motion.button>
+      </AnimatePresence>
     </div>
   )
 }
