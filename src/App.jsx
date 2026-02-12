@@ -7,8 +7,8 @@ import Phase5 from './components/Phase5'
 import Phase6 from './components/Phase6'
 
 function App() {
-  // DEV MODE: Start at Phase 5 for testing
-  const [phase, setPhase] = useState(5)
+  // DEV MODE: Start at Phase 4 for testing
+  const [phase, setPhase] = useState(4)
   const [data, setData] = useState({
     startDate: '2022-02-14', // Mock Date
     images: [
