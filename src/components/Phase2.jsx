@@ -87,7 +87,7 @@ export default function Phase2({ nextPhase }) {
         initial={{ opacity: 0, x: 100, scale: 0.95 }}
         animate={{ opacity: 1, x: -40, scale: 1 }}
         transition={{ type: "spring", damping: 30, stiffness: 100 }}
-        className="z-10 relative sm:mr-40 max-w-xl w-[92%] sm:w-[600px]"
+        className="z-10 relative sm:mr-40 max-w-2xl w-[92%] sm:w-[700px]"
       >
         <div className="absolute -inset-4 bg-gradient-to-r from-rose-200/15 via-pink-200/15 to-rose-200/15 rounded-[5rem] blur-3xl"></div>
 
@@ -120,7 +120,7 @@ export default function Phase2({ nextPhase }) {
                 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={nextPhase}
-                className="w-56 py-5 bg-gradient-to-r from-pink-500 to-rose-600 text-white rounded-[2rem] font-black text-base uppercase tracking-[0.15em] shadow-2xl shadow-pink-300/50 transition-all border border-white/30 relative overflow-hidden"
+                className="w-40 py-4 bg-gradient-to-r from-pink-500 to-rose-600 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest shadow-2xl shadow-pink-300/50 transition-all border border-white/30 relative overflow-hidden"
               >
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-pink-400 to-rose-500 opacity-0"
@@ -136,10 +136,10 @@ export default function Phase2({ nextPhase }) {
                   ref={noBtnRef}
                   key="no-button"
                   animate={noPosition}
-                  className="fixed w-44 py-4 bg-gradient-to-r from-rose-400 to-pink-400 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest cursor-default border-2 border-rose-500 shadow-2xl shadow-pink-400/60 z-[150]"
+                  className="fixed w-40 py-4 bg-gradient-to-r from-rose-400 to-pink-400 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest cursor-default border-2 border-rose-500 shadow-2xl shadow-pink-400/60 z-[150]"
                   style={{
-                    left: noPosition.x || '50%',
-                    top: noPosition.y || '50%',
+                    left: noPosition.x || 'calc(50% - 80px)',
+                    top: noPosition.y || 'calc(50% - 24px)',
                   }}
                   initial={{ opacity: 1 }}
                   animate={{ opacity: 1 }}
