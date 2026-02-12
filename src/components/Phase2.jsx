@@ -100,7 +100,7 @@ export default function Phase2({ nextPhase }) {
 
             {/* Midnight Blue Area with Butterflies */}
             <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-br from-blue-900/40 to-slate-950/90 pointer-events-none overflow-hidden">
-                {[...Array(8)].map((_, i) => <Butterfly key={i} id={i} />)}
+                {[...Array(20)].map((_, i) => <Butterfly key={i} id={i} />)}
             </div>
 
             {/* The Decision Card - Overlapping slightly */}
