@@ -81,22 +81,6 @@ export default function Phase2({ nextPhase }) {
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-pink-50/10 to-white/50"></div>
       </div>
 
-      {/* Corner Video - Completely Transparent */}
-      <div
-        className="absolute bottom-6 right-6 w-64 h-auto z-20 rounded-3xl overflow-hidden"
-      >
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-contain"
-          style={{ opacity: 0.9 }}
-        >
-          <source src="/corner_video.mp4" type="video/mp4" />
-        </video>
-      </div>
-
       {/* Premium Decision Card */}
       <motion.div
         ref={cardRef}
