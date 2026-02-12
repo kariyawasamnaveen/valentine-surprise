@@ -135,14 +135,13 @@ export default function Phase2({ nextPhase }) {
                 <motion.button
                   ref={noBtnRef}
                   key="no-button"
-                  animate={noPosition}
+                  animate={{ ...noPosition, opacity: 1 }}
                   className="fixed w-36 py-3 bg-gradient-to-r from-rose-400 to-pink-400 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest cursor-default border-2 border-rose-500 shadow-2xl shadow-pink-400/60 z-[150]"
                   style={{
                     left: noPosition.x || 'calc(50% + 90px)',
                     top: noPosition.y || 'calc(80vh - 100px)',
                   }}
                   initial={{ opacity: 1 }}
-                  animate={{ opacity: 1 }}
                   exit={{ opacity: 1 }}
                   transition={{
                     type: 'spring',
