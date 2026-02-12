@@ -32,36 +32,45 @@ export default function Phase2({ nextPhase }) {
       Math.pow(mousePos.y - btnCenterY, 2)
     )
 
-    // If mouse is within 180px, teleport button to a safe zone
-    if (distance < 180) {
+    // V16.0: Aggressive Proximity (220px)
+    if (distance < 220) {
       setIsButtonMoving(true)
       moveButtonToSafeZone()
-      // Reset moving state after animation completes
-      setTimeout(() => setIsButtonMoving(false), 700)
+      // Snappy reset
+      setTimeout(() => setIsButtonMoving(false), 500)
     }
   }, [mousePos, isButtonMoving])
 
   const moveButtonToSafeZone = () => {
     const viewportWidth = window.innerWidth
     const viewportHeight = window.innerHeight
-    const buttonWidth = 176
-    const buttonHeight = 56
-    const padding = 40
+    const buttonWidth = 144 // w-36 is 144px
+    const buttonHeight = 48 // py-3 is approx 48px height
+    const SCREEN_PADDING = 80 // 80px gap from all sides
 
-    // ALL 8 SAFE ZONES ENABLED
-    const safeZones = [
-      { x: padding, y: padding },
-      { x: viewportWidth - buttonWidth - padding, y: padding },
-      { x: padding, y: viewportHeight - buttonHeight - padding },
-      { x: viewportWidth - buttonWidth - padding, y: viewportHeight - buttonHeight - padding },
-      { x: padding, y: viewportHeight / 2 - buttonHeight / 2 },
-      { x: viewportWidth - buttonWidth - padding, y: viewportHeight / 2 - buttonHeight / 2 },
-      { x: viewportWidth / 2 - buttonWidth / 2, y: padding },
-      { x: viewportWidth / 2 - buttonWidth / 2, y: viewportHeight - buttonHeight - padding },
-    ]
+    // Calculate the "Inner Box" boundaries
+    const minX = SCREEN_PADDING
+    const maxX = viewportWidth - buttonWidth - SCREEN_PADDING
+    const minY = SCREEN_PADDING
+    const maxY = viewportHeight - buttonHeight - SCREEN_PADDING
 
-    const randomZone = safeZones[Math.floor(Math.random() * safeZones.length)]
-    setNoPosition(randomZone)
+    let newX, newY, distFromMouse
+    let attempts = 0
+
+    // Try to find a position that is within the box AND far from the mouse
+    do {
+      newX = Math.random() * (maxX - minX) + minX
+      newY = Math.random() * (maxY - minY) + minY
+
+      // Ensure the new point is at least 400px away from the mouse
+      distFromMouse = Math.sqrt(
+        Math.pow(newX + buttonWidth / 2 - mousePos.x, 2) +
+        Math.pow(newY + buttonHeight / 2 - mousePos.y, 2)
+      )
+      attempts++
+    } while (distFromMouse < 400 && attempts < 20)
+
+    setNoPosition({ x: newX, y: newY })
   }
 
   return (
