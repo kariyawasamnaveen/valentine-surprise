@@ -38,52 +38,46 @@ export default function Phase2({ nextPhase }) {
   }, [mousePos])
 
   const moveButtonToSafeZone = () => {
-    // Define safe zones (corners and edges of viewport, EXCLUDING bottom-right where video is)
     const viewportWidth = window.innerWidth
     const viewportHeight = window.innerHeight
-    const buttonWidth = 176 // w-44 = 11rem = 176px
-    const buttonHeight = 56 // py-4 + text ≈ 56px
+    const buttonWidth = 176
+    const buttonHeight = 56
     const padding = 40
 
     const safeZones = [
-      // Top corners
       { x: padding, y: padding },
       { x: viewportWidth - buttonWidth - padding, y: padding },
-      // Bottom LEFT corner only (avoiding bottom-right where video is)
       { x: padding, y: viewportHeight - buttonHeight - padding },
-      // Left and top mid edges
       { x: padding, y: viewportHeight / 2 - buttonHeight / 2 },
       { x: viewportWidth / 2 - buttonWidth / 2, y: padding },
-      // Top-right mid edge
       { x: viewportWidth - buttonWidth - padding, y: viewportHeight / 3 },
-      // Left-bottom mid edge
       { x: padding, y: viewportHeight / 3 },
     ]
 
-    // Pick a random safe zone
     const randomZone = safeZones[Math.floor(Math.random() * safeZones.length)]
     setNoPosition(randomZone)
   }
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-[#fef2f4] to-[#fff5f7] flex items-center justify-center sm:justify-end overflow-hidden">
-      {/* Background Anime Image */}
+    <div className="fixed inset-0 bg-gradient-to-br from-[#fef2f4] via-[#fff5f7] to-white flex items-center justify-center sm:justify-end overflow-hidden">
+      {/* Background Anime Image - Shifted Left to Reveal Girl */}
       <div
         className="absolute inset-0 bg-no-repeat pointer-events-none z-0"
         style={{
           backgroundImage: 'url("/proposal.png")',
           backgroundSize: '85%',
-          backgroundPosition: 'left center',
+          backgroundPosition: 'calc(0% - 120px) center', // Shifted 120px more to the left
           width: '100vw',
           height: '100vh',
           opacity: 0.85
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-pink-50/20 to-white/40"></div>
+        {/* Soft gradient overlay for seamless transition */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-pink-50/10 to-white/50"></div>
       </div>
 
-      {/* Corner Video */}
-      <div className="absolute bottom-6 right-6 w-64 h-auto z-20 rounded-3xl overflow-hidden shadow-2xl border-4 border-rose-200/50 bg-black">
+      {/* Corner Video - NO BORDERS, Subtle Shadow */}
+      <div className="absolute bottom-6 right-6 w-64 h-auto z-20 rounded-3xl overflow-hidden shadow-xl bg-black opacity-90">
         <video
           autoPlay
           loop
@@ -95,7 +89,7 @@ export default function Phase2({ nextPhase }) {
         </video>
       </div>
 
-      {/* Premium Decision Card */}
+      {/* Premium Decision Card - Seamless Integration */}
       <motion.div
         ref={cardRef}
         initial={{ opacity: 0, x: 100, scale: 0.95 }}
@@ -103,15 +97,17 @@ export default function Phase2({ nextPhase }) {
         transition={{ type: "spring", damping: 30, stiffness: 100 }}
         className="z-10 relative sm:mr-40 max-w-xl w-[92%] sm:w-[600px]"
       >
-        {/* Glow effect behind card */}
-        <div className="absolute -inset-4 bg-gradient-to-r from-rose-300 via-pink-300 to-rose-300 rounded-[5rem] blur-2xl opacity-30"></div>
+        {/* Soft glow effect (reduced opacity) */}
+        <div className="absolute -inset-4 bg-gradient-to-r from-rose-200/20 via-pink-200/20 to-rose-200/20 rounded-[5rem] blur-3xl"></div>
 
-        {/* Main Card */}
-        <div className="relative bg-gradient-to-br from-white via-white to-pink-50/30 backdrop-blur-3xl p-16 sm:p-20 rounded-[5rem] shadow-[0_60px_140px_-20px_rgba(244,63,94,0.25)] border-4 border-transparent bg-clip-padding">
-          {/* Gradient border overlay */}
-          <div className="absolute inset-0 rounded-[5rem] p-[4px] bg-gradient-to-br from-rose-300 via-pink-400 to-rose-300 -z-10"></div>
-          <div className="absolute inset-[4px] rounded-[calc(5rem-4px)] bg-gradient-to-br from-white via-white to-pink-50/30 backdrop-blur-3xl"></div>
-
+        {/* Main Card - NO BORDERS, Gradient Background with Fade */}
+        <div
+          className="relative p-16 sm:p-20 rounded-[5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)]"
+          style={{
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.7) 100%)',
+            backdropFilter: 'blur(10px)',
+          }}
+        >
           <div className="relative z-10">
             {/* Question */}
             <div className="mb-16 pt-4">
