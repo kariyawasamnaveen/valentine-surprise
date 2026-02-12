@@ -38,7 +38,7 @@ export default function Phase2({ nextPhase }) {
   }, [mousePos])
 
   const moveButtonToSafeZone = () => {
-    // Define safe zones (corners and edges of viewport)
+    // Define safe zones (corners and edges of viewport, EXCLUDING bottom-right where video is)
     const viewportWidth = window.innerWidth
     const viewportHeight = window.innerHeight
     const buttonWidth = 176 // w-44 = 11rem = 176px
@@ -49,14 +49,15 @@ export default function Phase2({ nextPhase }) {
       // Top corners
       { x: padding, y: padding },
       { x: viewportWidth - buttonWidth - padding, y: padding },
-      // Bottom corners
+      // Bottom LEFT corner only (avoiding bottom-right where video is)
       { x: padding, y: viewportHeight - buttonHeight - padding },
-      { x: viewportWidth - buttonWidth - padding, y: viewportHeight - buttonHeight - padding },
-      // Mid edges
+      // Left and top mid edges
       { x: padding, y: viewportHeight / 2 - buttonHeight / 2 },
-      { x: viewportWidth - buttonWidth - padding, y: viewportHeight / 2 - buttonHeight / 2 },
       { x: viewportWidth / 2 - buttonWidth / 2, y: padding },
-      { x: viewportWidth / 2 - buttonWidth / 2, y: viewportHeight - buttonHeight - padding },
+      // Top-right mid edge
+      { x: viewportWidth - buttonWidth - padding, y: viewportHeight / 3 },
+      // Left-bottom mid edge
+      { x: padding, y: viewportHeight / 3 },
     ]
 
     // Pick a random safe zone
@@ -146,7 +147,7 @@ export default function Phase2({ nextPhase }) {
               <motion.button
                 ref={noBtnRef}
                 animate={noPosition}
-                className="fixed w-44 py-4 bg-slate-100 text-slate-300 rounded-[1.5rem] font-bold text-sm uppercase tracking-widest cursor-default border border-slate-200 z-50"
+                className="fixed w-44 py-4 bg-slate-100 text-slate-300 rounded-[1.5rem] font-bold text-sm uppercase tracking-widest cursor-default border border-slate-200 z-[100]"
                 style={{
                   left: noPosition.x || '50%',
                   top: noPosition.y || '50%',
