@@ -65,7 +65,7 @@ export default function Phase2({ nextPhase }) {
   }
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-[#fef2f4] via-[#fff5f7] to-white flex items-end justify-center sm:justify-end pb-12 overflow-hidden">
+    <div className="fixed inset-0 bg-gradient-to-br from-[#fef2f4] via-[#fff5f7] to-white flex items-start justify-center sm:justify-end pt-20 overflow-hidden">
       {/* Background Anime Image */}
       <div
         className="absolute inset-0 bg-no-repeat pointer-events-none z-0"
@@ -139,7 +139,7 @@ export default function Phase2({ nextPhase }) {
                   className="fixed w-36 py-3 bg-gradient-to-r from-rose-400 to-pink-400 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest cursor-default border-2 border-rose-500 shadow-2xl shadow-pink-400/60 z-[150]"
                   style={{
                     left: noPosition.x || 'calc(50% + 90px)',
-                    top: noPosition.y || 'calc(80vh - 100px)',
+                    top: noPosition.y || 'calc(20vh + 80px)', // Align with card at top
                   }}
                   initial={{ opacity: 1 }}
                   exit={{ opacity: 1 }}
