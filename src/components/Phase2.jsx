@@ -111,25 +111,14 @@ export default function Phase2({ nextPhase }) {
                 transition={{ type: "spring", damping: 25, stiffness: 120 }}
                 className="z-10 bg-white/95 backdrop-blur-md p-10 sm:p-14 rounded-[3.5rem] shadow-[0_30px_100px_rgba(0,0,0,0.3)] border border-cyan-100 sm:mr-24 max-w-md w-[90%] sm:w-[30rem] text-center relative"
             >
-                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-cyan-400 via-pink-400 to-cyan-400"></div>
-
-                <div className="flex justify-center mb-8">
-                    <div className="p-3 bg-cyan-50 rounded-2xl">
-                        <ShieldCheck size={36} className="text-cyan-600" />
+                <div className="pt-8">
+                    <div className="mb-14">
+                        <h3 className="text-xl font-medium text-slate-500 mb-6 italic">Final Request...</h3>
+                        <p className="text-4xl font-black text-slate-900 leading-tight">
+                            "Will you be my <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-rose-600 font-black not-italic">Valentine?"</span>
+                        </p>
                     </div>
-                </div>
-
-                <h2 className="text-2xl font-black text-slate-800 mb-2">AUTH_OVERRIDE</h2>
-                <p className="text-cyan-600 font-mono text-[10px] mb-10 uppercase tracking-[0.5em] font-bold">
-                    Heart_Protocols: Ready
-                </p>
-
-                <div className="mb-14">
-                    <h3 className="text-xl font-medium text-slate-500 mb-4 italic">Final Request...</h3>
-                    <p className="text-4xl font-black text-slate-900 leading-tight">
-                        "Will you be my <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-rose-600">Valentine?"</span>
-                    </p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-6 justify-center items-center relative h-40 sm:h-20 sm:px-4">
