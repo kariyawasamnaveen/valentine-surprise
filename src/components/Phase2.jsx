@@ -44,14 +44,19 @@ export default function Phase2({ nextPhase }) {
     const buttonHeight = 56
     const padding = 40
 
+    // ALL 8 SAFE ZONES ENABLED (including bottom-right over video)
     const safeZones = [
+      // Top corners
       { x: padding, y: padding },
       { x: viewportWidth - buttonWidth - padding, y: padding },
+      // Bottom corners (INCLUDING bottom-right over video)
       { x: padding, y: viewportHeight - buttonHeight - padding },
+      { x: viewportWidth - buttonWidth - padding, y: viewportHeight - buttonHeight - padding },
+      // Mid edges
       { x: padding, y: viewportHeight / 2 - buttonHeight / 2 },
+      { x: viewportWidth - buttonWidth - padding, y: viewportHeight / 2 - buttonHeight / 2 },
       { x: viewportWidth / 2 - buttonWidth / 2, y: padding },
-      { x: viewportWidth - buttonWidth - padding, y: viewportHeight / 3 },
-      { x: padding, y: viewportHeight / 3 },
+      { x: viewportWidth / 2 - buttonWidth / 2, y: viewportHeight - buttonHeight - padding },
     ]
 
     const randomZone = safeZones[Math.floor(Math.random() * safeZones.length)]
@@ -76,8 +81,8 @@ export default function Phase2({ nextPhase }) {
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-pink-50/10 to-white/50"></div>
       </div>
 
-      {/* Corner Video - Faded Edges, No Borders */}
-      <div className="absolute bottom-6 right-6 w-64 h-auto z-20 rounded-3xl overflow-hidden bg-black shadow-lg">
+      {/* Corner Video - NO BORDERS, Fully Transparent Container */}
+      <div className="absolute bottom-6 right-6 w-64 h-auto z-20 rounded-3xl overflow-hidden">
         <video
           autoPlay
           loop
@@ -88,11 +93,11 @@ export default function Phase2({ nextPhase }) {
         >
           <source src="/corner_video.mp4" type="video/mp4" />
         </video>
-        {/* Fade overlay on all edges */}
+        {/* Subtle fade overlay on edges */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: 'radial-gradient(ellipse at center, transparent 40%, rgba(254,242,244,0.3) 100%)'
+            background: 'radial-gradient(ellipse at center, transparent 50%, rgba(254,242,244,0.2) 100%)'
           }}
         ></div>
       </div>
@@ -155,11 +160,11 @@ export default function Phase2({ nextPhase }) {
                 <span className="relative z-10">YES!</span>
               </motion.button>
 
-              {/* NO Button - Full Screen Evasion */}
+              {/* NO Button - Vibrant & Always Visible */}
               <motion.button
                 ref={noBtnRef}
                 animate={noPosition}
-                className="fixed w-44 py-4 bg-slate-100 text-slate-300 rounded-[1.5rem] font-bold text-sm uppercase tracking-widest cursor-default border border-slate-200 z-[100]"
+                className="fixed w-44 py-4 bg-gradient-to-r from-rose-400 to-pink-400 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest cursor-default border-2 border-rose-500 shadow-xl shadow-pink-400/40 z-[150]"
                 style={{
                   left: noPosition.x || '50%',
                   top: noPosition.y || '50%',
