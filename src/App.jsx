@@ -7,14 +7,11 @@ import Phase5 from './components/Phase5'
 import Phase6 from './components/Phase6'
 
 function App() {
-  // DEV MODE: Start from Phase 6 for testing
-  const [phase, setPhase] = useState(6)
+  // PRODUCTION MODE: Start from Phase 1
+  const [phase, setPhase] = useState(1)
   const [data, setData] = useState({
-    startDate: '2022-02-14',
-    images: [
-      '', '', '', '',
-      'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=2488&auto=format&fit=crop' // Mock Image for Phase 6
-    ],
+    startDate: '',
+    images: [],
     username: 'Hansi'
   })
 
