@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Camera, Calendar, Upload, CheckCircle2, Loader2, Sparkles } from 'lucide-react'
+import { Camera, Calendar, CheckCircle2, Loader2, Sparkles, Terminal, Activity, Heart, ShieldCheck, Lock } from 'lucide-react'
 
 const QUESTIONS = [
     { id: 1, label: "Block 01: The Spark", text: "When did this all begin?", subtext: "Select the date and upload the photo from that special day.", type: "date-image" },
@@ -16,6 +16,18 @@ export default function Phase3({ setData, nextPhase }) {
     const [tempDate, setTempDate] = useState('')
     const [images, setImages] = useState([])
     const [analyzingText, setAnalyzingText] = useState('')
+    const [heartRate, setHeartRate] = useState(72)
+
+    // Dynamic heart rate simulation
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setHeartRate(prev => {
+                const change = Math.floor(Math.random() * 5) - 2
+                return Math.max(68, Math.min(85, prev + change))
+            })
+        }, 1500)
+        return () => clearInterval(interval)
+    }, [])
 
     const handleUpload = (e) => {
         const file = e.target.files[0]
@@ -57,99 +69,214 @@ export default function Phase3({ setData, nextPhase }) {
     const progress = ((currentStep) / QUESTIONS.length) * 100
 
     return (
-        <div className="min-h-screen bg-[#080808] text-white p-6 flex flex-col items-center justify-center font-mono">
-            <div className="max-w-2xl w-full">
-                {/* Progress System */}
-                <div className="mb-12">
-                    <div className="flex justify-between text-xs uppercase tracking-widest text-gray-500 mb-2">
-                        <span>Memory Validation Progress</span>
-                        <span>{Math.round(progress)}%</span>
+        <div className="min-h-screen bg-[#070205] text-zinc-300 p-4 md:p-8 flex flex-col items-center justify-center font-mono relative overflow-hidden">
+            {/* Cyber Grid Background */}
+            <div className="absolute inset-0 opacity-10 pointer-events-none z-0">
+                <div className="w-full h-full bg-[linear-gradient(rgba(244,63,94,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(244,63,94,0.08)_1px,transparent_1px)] [background-size:24px_24px]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,#070205_100%)]" />
+            </div>
+
+            <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 z-10">
+                
+                {/* LEFT SIDEBAR: Developer / System Status Hub */}
+                <div className="lg:col-span-4 flex flex-col gap-6">
+                    {/* System specs widget */}
+                    <div className="bg-[#0d0408]/80 border border-rose-500/20 p-6 rounded-2xl backdrop-blur-md relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-rose-500/40"></div>
+                        <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-rose-500/40"></div>
+                        
+                        <div className="flex items-center gap-2.5 text-rose-500 mb-4 border-b border-rose-950 pb-3">
+                            <Activity size={18} className="animate-pulse" />
+                            <h2 className="text-xs font-bold uppercase tracking-widest">Love Core Telemetry</h2>
+                        </div>
+                        
+                        <div className="space-y-3.5 text-xs">
+                            <div className="flex justify-between items-center bg-[#12060c]/40 p-2.5 rounded border border-rose-950/40">
+                                <span className="text-zinc-500">DEVELOPER_ID</span>
+                                <span className="text-rose-400 font-bold">Naveen</span>
+                            </div>
+                            <div className="flex justify-between items-center bg-[#12060c]/40 p-2.5 rounded border border-rose-950/40">
+                                <span className="text-zinc-500">TARGET_MUSE</span>
+                                <span className="text-pink-400 font-bold">Hansi</span>
+                            </div>
+                            <div className="flex justify-between items-center bg-[#12060c]/40 p-2.5 rounded border border-rose-950/40">
+                                <span className="text-zinc-500">HEART_RATE</span>
+                                <span className="text-rose-500 font-bold flex items-center gap-1">
+                                    <Heart size={12} fill="#f43f5e" className="animate-bounce" />
+                                    {heartRate} BPM
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center bg-[#12060c]/40 p-2.5 rounded border border-rose-950/40">
+                                <span className="text-zinc-500">ENCRYPTION</span>
+                                <span className="text-emerald-500 font-bold flex items-center gap-1">
+                                    <Lock size={12} /> AES_LOVE_256
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div className="h-2 w-full bg-gray-900 rounded-full overflow-hidden border border-gray-800">
-                        <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${progress}%` }}
-                            className="h-full bg-gradient-to-r from-pink-600 to-red-600 shadow-lg shadow-pink-600/20"
-                        />
+
+                    {/* Sectors decryption widget */}
+                    <div className="bg-[#0d0408]/80 border border-rose-500/20 p-6 rounded-2xl backdrop-blur-md relative overflow-hidden flex-1 hidden lg:block">
+                        <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-rose-500/40"></div>
+                        <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-rose-500/40"></div>
+
+                        <div className="flex items-center gap-2.5 text-rose-500 mb-4 border-b border-rose-950 pb-3">
+                            <Terminal size={18} />
+                            <h2 className="text-xs font-bold uppercase tracking-widest">Memory Blocks Status</h2>
+                        </div>
+
+                        <div className="space-y-3 text-xs">
+                            {QUESTIONS.map((q, idx) => {
+                                const isDone = idx < currentStep
+                                const isCurrent = idx === currentStep
+                                return (
+                                    <div 
+                                        key={q.id}
+                                        className={`flex items-center justify-between p-2 rounded transition-colors ${
+                                            isCurrent ? 'bg-rose-500/10 border border-rose-500/30' : 'bg-transparent'
+                                        }`}
+                                    >
+                                        <span className={isDone ? 'text-rose-500/70 line-through' : isCurrent ? 'text-rose-400 font-bold' : 'text-zinc-600'}>
+                                            {q.label.split(":")[0]}
+                                        </span>
+                                        <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${
+                                            isDone ? 'text-rose-500/40 border border-rose-500/10' :
+                                            isCurrent ? 'text-rose-500 animate-pulse border border-rose-500/20' :
+                                            'text-zinc-700 border border-zinc-900'
+                                        }`}>
+                                            {isDone ? 'Decrypted' : isCurrent ? 'Decrypting' : 'Sealed'}
+                                        </span>
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
                 </div>
 
-                <AnimatePresence mode="wait">
-                    {!isAnalyzing ? (
-                        <motion.div
-                            key="question"
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            className="bg-[#111] border border-gray-800 p-8 rounded-2xl relative overflow-hidden"
-                        >
-                            <div className="absolute top-0 right-0 p-4 opacity-10">
-                                <Sparkles size={100} className="text-pink-500" />
-                            </div>
+                {/* CENTER AREA: Main Interface Card */}
+                <div className="lg:col-span-8 flex flex-col justify-center">
+                    {/* Progress System */}
+                    <div className="mb-8 bg-[#0d0408]/40 border border-rose-950/40 p-4 rounded-2xl backdrop-blur-md">
+                        <div className="flex justify-between text-xs uppercase tracking-widest text-zinc-500 mb-2.5 px-1 font-bold">
+                            <span className="flex items-center gap-2">
+                                <ShieldCheck size={14} className="text-rose-500" />
+                                Memory Validation Progress
+                            </span>
+                            <span className="text-rose-500">{Math.round(progress)}%</span>
+                        </div>
+                        <div className="h-2.5 w-full bg-zinc-950 rounded-full overflow-hidden border border-rose-950/30">
+                            <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${progress}%` }}
+                                transition={{ type: "spring", stiffness: 80 }}
+                                className="h-full bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 shadow-[0_0_15px_rgba(244,63,94,0.4)]"
+                            />
+                        </div>
+                    </div>
 
-                            <div className="flex items-center gap-2 text-pink-500 mb-2">
-                                <CheckCircle2 size={16} />
-                                <span className="text-xs font-bold uppercase tracking-tighter">{QUESTIONS[currentStep].label}</span>
-                            </div>
+                    <AnimatePresence mode="wait">
+                        {!isAnalyzing ? (
+                            <motion.div
+                                key="question"
+                                initial={{ opacity: 0, scale: 0.98 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.98 }}
+                                transition={{ duration: 0.3 }}
+                                className="bg-[#0d0408]/90 border border-rose-500/25 p-8 sm:p-10 rounded-3xl relative overflow-hidden shadow-[0_30px_70px_-20px_rgba(244,63,94,0.15)] backdrop-blur-md"
+                            >
+                                <div className="absolute top-0 right-0 p-4 opacity-5">
+                                    <Sparkles size={140} className="text-rose-500" />
+                                </div>
 
-                            <h3 className="text-2xl font-bold mb-2 text-gray-100">{QUESTIONS[currentStep].text}</h3>
-                            <p className="text-gray-500 text-sm mb-8 leading-relaxed">{QUESTIONS[currentStep].subtext}</p>
+                                <div className="flex items-center gap-2 text-rose-500 mb-3 border-b border-rose-950/60 pb-3">
+                                    <CheckCircle2 size={16} className="animate-pulse" />
+                                    <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest">{QUESTIONS[currentStep].label}</span>
+                                </div>
 
-                            <div className="space-y-6">
-                                {QUESTIONS[currentStep].type === "date-image" && (
-                                    <div className="space-y-2">
-                                        <label className="text-xs uppercase text-gray-600 flex items-center gap-2">
-                                            <Calendar size={12} /> Milestone Date
-                                        </label>
-                                        <input
-                                            type="date"
-                                            value={tempDate}
-                                            onChange={(e) => setTempDate(e.target.value)}
-                                            className="w-full bg-black border border-gray-800 rounded-lg p-3 text-white focus:border-pink-600 outline-none transition-colors"
-                                        />
-                                    </div>
-                                )}
+                                <h3 className="text-xl sm:text-2xl font-bold mb-2 text-zinc-100 font-serif leading-tight">
+                                    {QUESTIONS[currentStep].text}
+                                </h3>
+                                <p className="text-zinc-500 text-xs sm:text-sm mb-8 leading-relaxed">
+                                    {QUESTIONS[currentStep].subtext}
+                                </p>
 
-                                <label className={`
-                  flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-800 rounded-2xl cursor-pointer
-                  hover:border-pink-600/50 hover:bg-pink-900/5 transition-all group
-                  ${(QUESTIONS[currentStep].type === "date-image" && !tempDate) ? 'opacity-30 pointer-events-none' : ''}
-                `}>
-                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                        <div className="p-3 bg-gray-900 rounded-full mb-3 group-hover:bg-pink-900/20 transition-colors">
-                                            <Camera size={24} className="text-gray-500 group-hover:text-pink-500" />
+                                <div className="space-y-6">
+                                    {QUESTIONS[currentStep].type === "date-image" && (
+                                        <div className="space-y-2 group">
+                                            <label className="text-xs uppercase text-zinc-500 flex items-center gap-2 group-focus-within:text-rose-500 transition-colors">
+                                                <Calendar size={12} /> Milestone Date
+                                            </label>
+                                            <input
+                                                type="date"
+                                                value={tempDate}
+                                                onChange={(e) => setTempDate(e.target.value)}
+                                                className="w-full bg-[#12060c]/60 border border-rose-950/80 rounded-xl p-3.5 text-zinc-200 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 outline-none transition-all font-mono"
+                                            />
                                         </div>
-                                        <p className="text-sm text-gray-500">Click to upload memory</p>
-                                    </div>
-                                    <input type="file" className="hidden" accept="image/*" onChange={handleUpload} />
-                                </label>
-                            </div>
-                        </motion.div>
-                    ) : (
-                        <motion.div
-                            key="analyzing"
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            className="flex flex-col items-center justify-center py-20 bg-[#111] border border-pink-900/20 p-8 rounded-2xl"
-                        >
-                            <div className="relative mb-6">
-                                <Loader2 size={48} className="text-pink-600 animate-spin" />
-                                <motion.div
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: [0, 1, 0] }}
-                                    transition={{ repeat: Infinity, duration: 2 }}
-                                    className="absolute inset-0 bg-pink-600 blur-xl opacity-20"
-                                />
-                            </div>
-                            <p className="text-pink-500 font-bold tracking-widest uppercase text-xs">{analyzingText}</p>
-                            <p className="text-gray-600 mt-2 text-[10px] uppercase">Bypassing memory firewalls...</p>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                                    )}
 
-                <div className="mt-8 text-center text-gray-700 text-[10px] uppercase tracking-widest">
-                    Security Node: {currentStep + 1} / {QUESTIONS.length} Verified
+                                    <label className={`
+                                        flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-rose-950/80 rounded-2xl cursor-pointer
+                                        hover:border-rose-500/40 hover:bg-rose-500/[0.02] transition-all group relative overflow-hidden
+                                        ${(QUESTIONS[currentStep].type === "date-image" && !tempDate) ? 'opacity-20 pointer-events-none' : ''}
+                                    `}>
+                                        {/* Hover Laser Line effect */}
+                                        <div className="absolute inset-x-0 h-[1px] bg-rose-500/30 opacity-0 group-hover:opacity-100 group-hover:animate-pulse pointer-events-none" />
+
+                                        <div className="flex flex-col items-center justify-center p-6 text-center">
+                                            <div className="p-4 bg-[#12060c]/80 rounded-full mb-4 border border-rose-950/40 group-hover:border-rose-500/30 group-hover:bg-rose-500/10 transition-all">
+                                                <Camera size={26} className="text-zinc-500 group-hover:text-rose-400 transition-colors" />
+                                            </div>
+                                            <p className="text-sm font-bold text-zinc-400 group-hover:text-rose-400 transition-colors">
+                                                Click to upload memory
+                                            </p>
+                                            <p className="text-[10px] text-zinc-600 mt-2 uppercase tracking-wider">
+                                                System requires primary image payload
+                                            </p>
+                                        </div>
+                                        <input type="file" className="hidden" accept="image/*" onChange={handleUpload} />
+                                    </label>
+                                </div>
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="analyzing"
+                                initial={{ opacity: 0, scale: 0.98 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="flex flex-col items-center justify-center py-20 bg-[#0d0408]/90 border border-rose-500/25 p-8 sm:p-12 rounded-3xl shadow-[0_30px_70px_-20px_rgba(244,63,94,0.15)] backdrop-blur-md relative overflow-hidden"
+                            >
+                                {/* Laser scanning line */}
+                                <motion.div 
+                                    animate={{ y: [-150, 150] }}
+                                    transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                                    className="absolute inset-x-0 h-0.5 bg-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.8)] pointer-events-none z-10"
+                                />
+
+                                <div className="relative mb-8">
+                                    <Loader2 size={56} className="text-rose-500 animate-spin" />
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: [0, 1, 0] }}
+                                        transition={{ repeat: Infinity, duration: 2 }}
+                                        className="absolute inset-0 bg-rose-500 blur-2xl opacity-30"
+                                    />
+                                </div>
+                                <p className="text-rose-400 font-bold tracking-widest uppercase text-xs sm:text-sm font-mono">
+                                    {analyzingText}
+                                </p>
+                                <p className="text-zinc-600 mt-2 text-[10px] uppercase tracking-wider font-mono">
+                                    Decrypting image vectors & syncing memory nodes...
+                                </p>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    <div className="mt-8 text-center text-zinc-600 text-[10px] uppercase tracking-widest font-mono">
+                        Security Verification Node: {currentStep + 1} / {QUESTIONS.length} Verified
+                    </div>
                 </div>
+
             </div>
         </div>
     )
